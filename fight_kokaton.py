@@ -1,3 +1,8 @@
+"""
+練習問題3
+スライド25
+"""
+
 import os
 import random
 import sys
@@ -140,7 +145,6 @@ class Bomb:
         self.rct.move_ip(self.vx, self.vy)
         screen.blit(self.img, self.rct)
 
-
 def main():
     pg.display.set_caption("たたかえ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))    
@@ -159,11 +163,12 @@ def main():
 
         screen.blit(bg_img, [0, 0])
 
-        # 爆弾がNoneでない場合、ビームが爆弾に当たったかを確認
+        # ビームと爆弾の衝突判定
         if bomb is not None and beam is not None:
             if beam.rct.colliderect(bomb.rct):
                 beam = None  # ビームを消滅
                 bomb = None  # 爆弾を消滅
+                bird.change_img(6, screen)  # こうかとんが喜ぶ表情に切り替える
 
         # こうかとんと爆弾の衝突判定
         if bomb is not None and bird.rct.colliderect(bomb.rct):
@@ -172,22 +177,18 @@ def main():
             time.sleep(1)
             return
 
-        # 押下キーに応じたこうかとんの移動
         key_lst = pg.key.get_pressed()
         bird.update(key_lst, screen)
-        
-        # ビームがNoneでない場合に更新
+
         if beam is not None:
             beam.update(screen)
         
-        # 爆弾がNoneでない場合に更新
         if bomb is not None:
             bomb.update(screen)
 
         pg.display.update()
         tmr += 1
         clock.tick(50)
-
 
 
 if __name__ == "__main__":
